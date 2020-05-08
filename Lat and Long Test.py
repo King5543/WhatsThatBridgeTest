@@ -10,17 +10,9 @@ if __name__ == '__main__':
     bridge_location = []
     bridge_latitude = soup.select('span.latitude')[0].text
     bridge_longitude = soup.select('span.longitude')[0].text
-    if '+' in bridge_latitude:
-        bridge_latitude.replace('+', '')
-        bridge_latitude = int(bridge_latitude)
-    else:
-        bridge_latitude = int(bridge_latitude)
-
-    if '+' in bridge_longitude:
-        bridge_longitude.replace('+', '')
-        bridge_longitude = int(bridge_longitude)
-    else:
-        bridge_longitude = int(bridge_longitude)
+    bridge_latitude = float(bridge_latitude)
+    bridge_longitude = float(bridge_longitude)
     bridge_location.append(bridge_latitude)
     bridge_location.append(bridge_longitude)
     print(bridge_location)
+    # latitude and longitude made into a list
