@@ -7,12 +7,12 @@ if __name__ == '__main__':
     # get request the HTML content
     soup = BeautifulSoup(bridge_specifics, 'html.parser')
     # parses through the html page text
-    bridge_location = []
-    bridge_latitude = soup.select('span.latitude')[0].text
-    bridge_longitude = soup.select('span.longitude')[0].text
-    bridge_latitude = float(bridge_latitude)
-    bridge_longitude = float(bridge_longitude)
-    bridge_location.append(bridge_latitude)
-    bridge_location.append(bridge_longitude)
-    print(bridge_location)
-    # latitude and longitude made into a list
+    bridge_latitude_longitude_traffic = []
+    bridge_latitude = float(soup.select('span.latitude')[0].text)
+    bridge_longitude = float(soup.select('span.longitude')[0].text)
+    bridge_traffic = float(soup.select('div.section dd')[10].text.replace(",", ''))
+    bridge_latitude_longitude_traffic.append(bridge_latitude)
+    bridge_latitude_longitude_traffic.append(bridge_longitude)
+    bridge_latitude_longitude_traffic.append(bridge_traffic)
+    print(bridge_latitude_longitude_traffic)
+    # latitude, longitude, and traffic made into a list

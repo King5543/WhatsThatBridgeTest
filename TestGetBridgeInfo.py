@@ -50,12 +50,30 @@ if __name__ == '__main__':
     while bridge_info < len(bridge_list):
         bridge_page = bridge_list[bridge_info][1]
         bridge_url = 'https://bridgehunter.com' + bridge_page
-
         bridge_specifics = requests.get(bridge_url).text
         # get request the HTML content
         soup = BeautifulSoup(bridge_specifics, 'html.parser')
         # parses through the html page text
-        bridge_location = soup.select('span.geo span.longitude')
+        bridge_latitude_longitude_traffic_name = []
+        bridge_latitude = float(soup.select('span.latitude')[0].text)
+        bridge_longitude = float(soup.select('span.longitude')[0].text)
 
-        print(bridge_location)
-        # finds all bridge names and url pairs for each
+        try:
+            bridge_traffic = float(soup.select('div.section dd')[10].text.replace(",", ''))
+            bridge_latitude_longitude_traffic_name.append(bridge_latitude)
+            bridge_latitude_longitude_traffic_name.append(bridge_longitude)
+            bridge_latitude_longitude_traffic_name.append(bridge_traffic)
+            bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
+            print(bridge_latitude_longitude_traffic_name)
+            # latitude, longitude, and traffic made into a list
+            bridge_info += 1
+
+        except:
+            bridge_traffic = 0
+            bridge_latitude_longitude_traffic_name.append(bridge_latitude)
+            bridge_latitude_longitude_traffic_name.append(bridge_longitude)
+            bridge_latitude_longitude_traffic_name.append(bridge_traffic)
+            bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
+            print(bridge_latitude_longitude_traffic_name)
+            # latitude, longitude, and traffic made into a list
+            bridge_info += 1
