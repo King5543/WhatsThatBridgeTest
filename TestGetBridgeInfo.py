@@ -1,8 +1,11 @@
 import requests
+import csv
 from math import sin, cos, sqrt, atan2, radians
 from bs4 import BeautifulSoup
 
 USER_LOCATION = [50, 50, 'some', 'AUSTINTEST']
+
+
 # test user location data
 
 
@@ -26,10 +29,11 @@ def distance_calc(base_location, new_location):
     distance_long = bridge_long - user_long
     a = sin(distance_lat / 2) ** 2 + cos(user_lat) * cos(bridge_lat) * sin(distance_long / 2) ** 2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    # calculates distance of bridges from user
 
     distance_to_user = float(R * c)
     return [bridge_location[3], distance_to_user, popularity_num]
-    # calculates distance of bridges from user
+    # returns bridge name, distance from user, and daily use number
 
 
 if __name__ == '__main__':
@@ -57,7 +61,7 @@ if __name__ == '__main__':
         # makes list with bridge name and it's url
     # bridge_list is filled with all the bridges on this page and their urls
 
-    """while page <= 228:
+    while page <= 228:
         bridge_page_url = 'https://bridgehunter.com/category/status/open/page' + str(page) + '/'
         bridge_content = requests.get(bridge_start_url).text
         # get request the HTML content
@@ -76,11 +80,11 @@ if __name__ == '__main__':
             bridge += 1
             # makes list with bridge name and it's url
         # bridge_list is filled with all the bridges on this page and their urls
-        
-        print("another bridge down")
+
         page += 1
-    print('We done did it!')"""
+    print('We done did it!')
     # gets the name and link for every bridge
+
     bridge_info = 0
     bridge_info_list = []
     while bridge_info < len(bridge_list):
@@ -100,10 +104,10 @@ if __name__ == '__main__':
             bridge_latitude_longitude_traffic_name.append(bridge_longitude)
             bridge_latitude_longitude_traffic_name.append(bridge_traffic)
             bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
-            print(bridge_info_list)
-            # latitude, longitude, and traffic made into a list
-            bridge_latitude_longitude_traffic_name.append(bridge_latitude_longitude_traffic_name)
-            bridge_info_list.append(distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name))
+
+            # latitude, longitude, traffic, and name made into a list
+            # bridge_info_list.append(distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name))
+            bridge_info_list.append(bridge_latitude_longitude_traffic_name)
             bridge_info += 1
 
         except:
@@ -112,16 +116,20 @@ if __name__ == '__main__':
             bridge_latitude_longitude_traffic_name.append(bridge_longitude)
             bridge_latitude_longitude_traffic_name.append(bridge_traffic)
             bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
-            print(bridge_info_list)
             # latitude, longitude, traffic, and name made into a list
-            bridge_latitude_longitude_traffic_name.append(bridge_latitude_longitude_traffic_name)
-            distance = distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name)
-            bridge_info_list.append(distance)
+
+            # distance = distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name)
+            # will need to alter^ so data is taken from database for calculation
+            bridge_info_list.append(bridge_latitude_longitude_traffic_name)
             bridge_info += 1
 
-    bridge_info_list.sort(key=lambda bridge_info_list: bridge_info_list[1])
-    print(bridge_info_list)
-    top_five_closest_bridges = bridge_info_list[:5]
-    print(top_five_closest_bridges)
-    top_five_closest_bridges.sort(key=lambda top_five_closest_bridges: top_five_closest_bridges[2], reverse=True)
-    print(top_five_closest_bridges)
+    # bridge_info_list.sort(key=lambda bridge_info_list: bridge_info_list[1])
+    # print(bridge_info_list)
+    # top_five_closest_bridges = bridge_info_list[:5]
+    # print(top_five_closest_bridges)
+    # top_five_closest_bridges.sort(key=lambda top_five_closest_bridges: top_five_closest_bridges[2], reverse=True)
+    # print(top_five_closest_bridges)
+    file = open('whatsthatbridgedata.csv', 'w', newline='')
+    with file:
+        write = csv.writer(file)
+        write.writerows(bridge_info_list)
