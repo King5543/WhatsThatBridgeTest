@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+</head>
+<body>
+<form action="{% url 'bridge:closest_bridges' %}" method="GET">
+    {% csrf_token %}
+    <input type="text" name="user_latitude" id="latitude">
+    <input type="text" name="user_longitude" id="longitude">
+    <button type = "button" onclick="submitForm()">Submit</button>
+
+</form>
+<table>
+    <caption>5 Closest Bridges</caption>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+</table>
+</body>
+</html>
