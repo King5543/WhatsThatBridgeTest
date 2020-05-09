@@ -98,7 +98,7 @@ if __name__ == '__main__':
         bridge_latitude = float(soup.select('span.latitude')[0].text)
         bridge_longitude = float(soup.select('span.longitude')[0].text)
 
-        try:
+        if not ValueError:
             bridge_traffic = float(soup.select('div.section dd')[10].text.replace(",", ''))
             bridge_latitude_longitude_traffic_name.append(bridge_latitude)
             bridge_latitude_longitude_traffic_name.append(bridge_longitude)
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             bridge_info_list.append(bridge_latitude_longitude_traffic_name)
             bridge_info += 1
 
-        except:
+        elif ValueError or NameError:
             bridge_traffic = 0
             bridge_latitude_longitude_traffic_name.append(bridge_latitude)
             bridge_latitude_longitude_traffic_name.append(bridge_longitude)
@@ -118,7 +118,6 @@ if __name__ == '__main__':
             bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
             # latitude, longitude, traffic, and name made into a list
 
-            # distance = distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name)
             # will need to alter^ so data is taken from database for calculation
             bridge_info_list.append(bridge_latitude_longitude_traffic_name)
             bridge_info += 1
@@ -130,6 +129,8 @@ if __name__ == '__main__':
     # top_five_closest_bridges.sort(key=lambda top_five_closest_bridges: top_five_closest_bridges[2], reverse=True)
     # print(top_five_closest_bridges)
     file = open('whatsthatbridgedata.csv', 'w', newline='')
-    with file:
-        write = csv.writer(file)
-        write.writerows(bridge_info_list)
+    write = csv.writer(file)
+    for i in bridge_info_list:
+        write.writerow(i)
+
+
