@@ -61,16 +61,17 @@ if __name__ == '__main__':
         # makes list with bridge name and it's url
     # bridge_list is filled with all the bridges on this page and their urls
 
+    page = 2
     while page <= 228:
         bridge_page_url = 'https://bridgehunter.com/category/status/open/page' + str(page) + '/'
-        bridge_content = requests.get(bridge_start_url).text
+        bridge_content = requests.get(bridge_page_url).text
         # get request the HTML content
         soup = BeautifulSoup(bridge_content, 'html.parser')
         # parses through the html page text
         link_bridges = soup.select('div.x a.name')
-        print('Made it through a page')
+        print('Made it through page' + str(page))
         # finds all bridge names and url pairs for each bridge
-        
+
         bridge = 0
         while bridge < len(link_bridges):
             href = link_bridges[bridge].get('href')
@@ -78,7 +79,7 @@ if __name__ == '__main__':
             new_bridge = [name_bridge, href]
             bridge_list.append(new_bridge)
             bridge += 1
-            # makes list with bridge name and it's url
+        # makes list with bridge name and it's url
         # bridge_list is filled with all the bridges on this page and their urls
 
         page += 1
@@ -94,34 +95,49 @@ if __name__ == '__main__':
         # get request the HTML content
         soup = BeautifulSoup(bridge_specifics, 'html.parser')
         # parses through the html page text
-        bridge_latitude_longitude_traffic_name = []
-        bridge_latitude = float(soup.select('span.latitude')[0].text)
-        bridge_longitude = float(soup.select('span.longitude')[0].text)
+        bridge_latitude_longitude_traffic_name_pic = []
+        try:
+            bridge_latitude = float(soup.find('span', {'class': 'latitude'}).get_text())
+        except None:
+            bridge_latitude = 0
+        try:
+            bridge_longitude = float(soup.find('span', {'class': 'longitude'}).get_text())
+        except None:
+            bridge_longitude = 0
 
-        if not ValueError:
-            bridge_traffic = float(soup.select('div.section dd')[10].text.replace(",", ''))
-            bridge_latitude_longitude_traffic_name.append(bridge_latitude)
-            bridge_latitude_longitude_traffic_name.append(bridge_longitude)
-            bridge_latitude_longitude_traffic_name.append(bridge_traffic)
-            bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
+        bridge_link = soup.find("img")
+        bridge_link_source = str(bridge_link['src'])
+        bridge_pic = 'https://bridgehunter.com' + bridge_link_source
+        try:
+            bridge_traffic = soup.select('div.section dd')[10].text.replace(",", '')
+
+        except IndexError:
+            bridge_traffic = 0
+
+        try:
+            float(bridge_traffic)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_latitude)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_longitude)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_traffic)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_list[bridge_info][0])
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_pic)
 
             # latitude, longitude, traffic, and name made into a list
             # bridge_info_list.append(distance_calc(USER_LOCATION, bridge_latitude_longitude_traffic_name))
-            bridge_info_list.append(bridge_latitude_longitude_traffic_name)
-            bridge_info += 1
+            bridge_info_list.append(bridge_latitude_longitude_traffic_name_pic)
 
-        elif ValueError or NameError:
+        except ValueError:
             bridge_traffic = 0
-            bridge_latitude_longitude_traffic_name.append(bridge_latitude)
-            bridge_latitude_longitude_traffic_name.append(bridge_longitude)
-            bridge_latitude_longitude_traffic_name.append(bridge_traffic)
-            bridge_latitude_longitude_traffic_name.append(bridge_list[bridge_info][0])
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_latitude)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_longitude)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_traffic)
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_list[bridge_info][0])
+            bridge_latitude_longitude_traffic_name_pic.append(bridge_pic)
             # latitude, longitude, traffic, and name made into a list
 
             # will need to alter^ so data is taken from database for calculation
-            bridge_info_list.append(bridge_latitude_longitude_traffic_name)
-            bridge_info += 1
-
+            bridge_info_list.append(bridge_latitude_longitude_traffic_name_pic)
+        bridge_info += 1
     # bridge_info_list.sort(key=lambda bridge_info_list: bridge_info_list[1])
     # print(bridge_info_list)
     # top_five_closest_bridges = bridge_info_list[:5]
@@ -132,5 +148,3 @@ if __name__ == '__main__':
     write = csv.writer(file)
     for i in bridge_info_list:
         write.writerow(i)
-
-
