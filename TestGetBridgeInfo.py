@@ -96,17 +96,23 @@ if __name__ == '__main__':
         soup = BeautifulSoup(bridge_specifics, 'html.parser')
         # parses through the html page text
         bridge_latitude_longitude_traffic_name_pic = []
-        try:
-            bridge_latitude = float(soup.find('span', {'class': 'latitude'}).get_text())
-        except None:
+        bridge_latitude = soup.find('span', {'class': 'latitude'})
+        if bridge_latitude is None:
             bridge_latitude = 0
-        try:
-            bridge_longitude = float(soup.find('span', {'class': 'longitude'}).get_text())
-        except None:
+        else:
+            bridge_latitude = float(bridge_latitude.get_text())
+
+        bridge_longitude = soup.find('span', {'class': 'longitude'})
+        if bridge_longitude is None:
             bridge_longitude = 0
+        else:
+            bridge_longitude = float(bridge_longitude.get_text())
 
         bridge_link = soup.find("img")
-        bridge_link_source = str(bridge_link['src'])
+        if bridge_link is None:
+            bridge_link_source = '/'
+        else:
+            bridge_link_source = str(bridge_link['src'])
         bridge_pic = 'https://bridgehunter.com' + bridge_link_source
         try:
             bridge_traffic = soup.select('div.section dd')[10].text.replace(",", '')
