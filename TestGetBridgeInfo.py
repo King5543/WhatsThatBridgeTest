@@ -98,13 +98,13 @@ if __name__ == '__main__':
         bridge_latitude_longitude_traffic_name_pic = []
         bridge_latitude = soup.find('span', {'class': 'latitude'})
         if bridge_latitude is None:
-            bridge_latitude = 0
+            bridge_latitude = 999
         else:
             bridge_latitude = float(bridge_latitude.get_text())
 
         bridge_longitude = soup.find('span', {'class': 'longitude'})
         if bridge_longitude is None:
-            bridge_longitude = 0
+            bridge_longitude = 999
         else:
             bridge_longitude = float(bridge_longitude.get_text())
 
@@ -153,7 +153,5 @@ if __name__ == '__main__':
     file = open('whatsthatbridgedata.csv', 'w', newline='')
     write = csv.writer(file)
     for i in bridge_info_list:
-        if bridge_info_list[0] != 0 and bridge_info_list[1] != 0:
             write.writerow(i)
-        else:
-            pass
+
