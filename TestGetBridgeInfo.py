@@ -144,14 +144,9 @@ if __name__ == '__main__':
             # will need to alter^ so data is taken from database for calculation
             bridge_info_list.append(bridge_latitude_longitude_traffic_name_pic)
         bridge_info += 1
-    # bridge_info_list.sort(key=lambda bridge_info_list: bridge_info_list[1])
-    # print(bridge_info_list)
-    # top_five_closest_bridges = bridge_info_list[:5]
-    # print(top_five_closest_bridges)
-    # top_five_closest_bridges.sort(key=lambda top_five_closest_bridges: top_five_closest_bridges[2], reverse=True)
-    # print(top_five_closest_bridges)
+
     file = open('whatsthatbridgedata.csv', 'w', newline='')
     write = csv.writer(file)
     for i in bridge_info_list:
-            write.writerow(i)
+        write.writerow(i)
 
