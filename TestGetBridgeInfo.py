@@ -153,4 +153,7 @@ if __name__ == '__main__':
     file = open('whatsthatbridgedata.csv', 'w', newline='')
     write = csv.writer(file)
     for i in bridge_info_list:
-        write.writerow(i)
+        if bridge_info_list[0] != 0 and bridge_info_list[1] != 0:
+            write.writerow(i)
+        else:
+            pass

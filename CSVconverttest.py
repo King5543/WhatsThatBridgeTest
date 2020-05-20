@@ -1,7 +1,7 @@
 import csv
 from math import sin, cos, sqrt, atan2, radians
 
-USERLOCATION = [30, 30]
+USERLOCATION = [99, 99]
 if __name__ == '__main__':
     with open('whatsthatbridgedata.csv') as f:
         file_reader = csv.reader(f)
@@ -37,7 +37,8 @@ if __name__ == '__main__':
             ranking_list.append(ranking_info)
 
     ranking_list.sort(key=lambda ranking_list: ranking_list[1])
-    print(ranking_list)
     f.close()
+    print(ranking_list)
     top_five_list = ranking_list[:5]
     top_five_list.sort(key=lambda top_five_list: top_five_list[2])
+    print(top_five_list)
